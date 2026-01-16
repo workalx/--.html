@@ -4,24 +4,145 @@
 <meta charset="UTF-8">
 <title>Історичні питання</title>
 <style>
+/* === Reset === */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* === Body === */
 body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  min-height: 100vh;
+  padding: 30px 20px;
+  background:
+    radial-gradient(circle at top, #1b2735 0%, #090a0f 60%);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-input, button {
+
+/* === Headings === */
+h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  letter-spacing: 0.4px;
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  opacity: 0.9;
+}
+
+/* === Main container illusion === */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(76, 161, 175, 0.15), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(196, 113, 237, 0.15), transparent 40%);
+  pointer-events: none;
+}
+
+/* === Input === */
+input {
   width: 100%;
-  padding: 10px;
-  margin-top: 10px;
+  max-width: 520px;
+  padding: 16px 18px;
+  margin-top: 12px;
+  border-radius: 14px;
+  font-size: 16px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  backdrop-filter: blur(14px);
+  outline: none;
+  transition: all 0.25s ease;
 }
-.history {
-  margin-top: 20px;
+
+input::placeholder {
+  color: rgba(255,255,255,0.5);
 }
-.history-item {
-  background: #f2f2f2;
-  padding: 10px;
-  margin-bottom: 8px;
+
+input:focus {
+  border-color: rgba(120, 180, 255, 0.7);
+  box-shadow: 0 0 0 3px rgba(120,180,255,0.2);
+}
+
+/* === Button === */
+button {
+  width: 100%;
+  max-width: 520px;
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 14px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
+  color: #fff;
+  background: linear-gradient(135deg, #4ca1af, #c471ed);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s;
 }
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+  opacity: 0.95;
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* === History block === */
+.history {
+  width: 100%;
+  max-width: 520px;
+  margin-top: 32px;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* === History items === */
+.history-item {
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08);
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1.4;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.history-item:hover {
+  background: rgba(255,255,255,0.14);
+  transform: translateX(4px);
+}
+
+/* === Mobile polish === */
+@media (max-width: 480px) {
+  h2 {
+    font-size: 24px;
+  }
+
+  input, button {
+    font-size: 15px;
+  }
+}
+
 </style>
 </head>
 <body>
