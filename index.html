@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Історичний аналіз</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <h2>📚 Історичне питання</h2>
+    <p id="question"></p>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        const params = new URLSearchParams(window.location.search);
+        const question = params.get("q");
+
+        document.getElementById("question").innerText = question;
+    </script>
+</body>
+</html>
