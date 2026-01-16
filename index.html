@@ -1,22 +1,86 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <title>Історичний аналіз</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<meta charset="UTF-8">
+<title>Історичні питання</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+}
+.history {
+  margin-top: 20px;
+}
+.history-item {
+  background: #f2f2f2;
+  padding: 10px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+</style>
 </head>
 <body>
-    <h2>📚 Історичне питання</h2>
-    <p id="question"></p>
 
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+<h2>📚 Історичне питання</h2>
 
-        const params = new URLSearchParams(window.location.search);
-        const question = params.get("q");
+<input id="question" placeholder="Введи питання з історії">
+<button onclick="ask()">Відкрити ChatGPT</button>
 
-        document.getElementById("question").innerText = question;
-    </script>
+<div class="history">
+  <h3>🕘 Історія</h3>
+  <div id="history"></div>
+</div>
+
+<script>
+function ask() {
+  const q = document.getElementById("question").value.trim();
+  if (!q) return;
+
+  saveHistory(q);
+
+  const prompt = `
+Ти — історичний AI-чатбот.
+Поясни просто, без пропаганди.
+Використовуй дати та факти.
+
+Питання: ${q}
+  `;
+
+  const url = "https://chat.openai.com/?q=" + encodeURIComponent(prompt);
+  window.open(url, "_blank");
+}
+
+function saveHistory(q) {
+  let history = JSON.parse(localStorage.getItem("history")) || [];
+  history.unshift(q);
+  history = history.slice(0, 10);
+  localStorage.setItem("history", JSON.stringify(history));
+  renderHistory();
+}
+
+function renderHistory() {
+  const history = JSON.parse(localStorage.getItem("history")) || [];
+  const container = document.getElementById("history");
+  container.innerHTML = "";
+
+  history.forEach(q => {
+    const div = document.createElement("div");
+    div.className = "history-item";
+    div.innerText = q;
+    div.onclick = () => {
+      document.getElementById("question").value = q;
+    };
+    container.appendChild(div);
+  });
+}
+
+renderHistory();
+</script>
+
 </body>
 </html>
