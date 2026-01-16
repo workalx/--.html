@@ -37,6 +37,17 @@ input, button {
 </div>
 
 <script>
+// 📥 отримуємо питання з URL
+const params = new URLSearchParams(window.location.search);
+const qFromUrl = params.get("q");
+
+// 🧠 якщо питання прийшло з Telegram — підставляємо
+if (qFromUrl) {
+  document.getElementById("question").value = qFromUrl;
+  saveHistory(qFromUrl);
+}
+
+// 🔘 кнопка
 function ask() {
   const q = document.getElementById("question").value.trim();
   if (!q) return;
@@ -51,18 +62,22 @@ function ask() {
 Питання: ${q}
   `;
 
-  const url = "https://chat.openai.com/?q=" + encodeURIComponent(prompt);
-  window.open(url, "_blank");
+  // ⚠️ відкривається в Telegram WebView, якщо це Web App
+  location.href = "https://chat.openai.com/?q=" + encodeURIComponent(prompt);
 }
 
+// 💾 збереження історії
 function saveHistory(q) {
   let history = JSON.parse(localStorage.getItem("history")) || [];
-  history.unshift(q);
+  if (!history.includes(q)) {
+    history.unshift(q);
+  }
   history = history.slice(0, 10);
   localStorage.setItem("history", JSON.stringify(history));
   renderHistory();
 }
 
+// 🕘 рендер історії
 function renderHistory() {
   const history = JSON.parse(localStorage.getItem("history")) || [];
   const container = document.getElementById("history");
@@ -81,6 +96,7 @@ function renderHistory() {
 
 renderHistory();
 </script>
+
 
 </body>
 </html>
