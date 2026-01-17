@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Історичні питання</title>
+
 <style>
 * {
   box-sizing: border-box;
@@ -12,144 +13,88 @@
   -webkit-tap-highlight-color: rgba(76, 161, 175, 0.3);
 }
 
-*:focus {
-  outline: none;
-}
+*:focus { outline: none; }
 
 body {
   font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
   min-height: 100vh;
   background: radial-gradient(circle at top, #1b2735 0%, #090a0f 60%);
-  color: #ffffff;
+  color: #fff;
   overflow-x: hidden;
 }
 
-body::before {
-  content: "";
+body.no-scroll {
   position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(76, 161, 175, 0.15), transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(196, 113, 237, 0.15), transparent 40%);
-  pointer-events: none;
+  width: 100%;
 }
 
-/* === Sidebar === */
+/* ===== Sidebar ===== */
 .sidebar {
   position: fixed;
-  left: 0;
-  top: 0;
-  height: 100vh;
-  background: rgba(20, 20, 25, 0.95);
-  backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  transition: width 0.3s ease;
+  inset: 0 auto 0 0;
   width: 60px;
+  background: rgba(20,20,25,0.95);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(255,255,255,0.1);
+  transition: width .3s ease, transform .3s ease;
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 
-.sidebar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.sidebar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 3px;
-}
-
-.sidebar.expanded {
-  width: 260px;
-}
+.sidebar.expanded { width: 260px; }
 
 /* Logo */
 .logo {
   padding: 20px;
   font-size: 24px;
-  font-weight: 700;
-  color: #fff;
   display: flex;
-  align-items: center;
   gap: 12px;
-  white-space: nowrap;
-  overflow: hidden;
 }
 
 .logo-text {
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity .3s;
 }
 
-.sidebar.expanded .logo-text {
-  opacity: 1;
-}
+.sidebar.expanded .logo-text { opacity: 1; }
 
-/* Menu items */
+/* Menu */
 .menu {
-  margin-top: 100px;
+  margin-top: 80px;
+  padding: 0 10px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 0 10px;
 }
 
 .menu-item {
   display: flex;
-  align-items: center;
   gap: 14px;
-  padding: 12px 10px;
+  padding: 12px;
   border-radius: 10px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  color: rgba(255, 255, 255, 0.8);
-  touch-action: manipulation;
-  user-select: none;
-  -webkit-user-select: none;
   min-height: 44px;
 }
 
 .menu-item:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
-
-.menu-item:active {
-  background: rgba(255, 255, 255, 0.15);
-  transform: scale(0.98);
-}
-
-.menu-item svg {
-  min-width: 20px;
-  width: 20px;
-  height: 20px;
+  background: rgba(255,255,255,.1);
 }
 
 .menu-item span {
   opacity: 0;
-  transition: opacity 0.3s ease;
-  font-size: 15px;
+  transition: opacity .3s;
 }
 
-.sidebar.expanded .menu-item span {
-  opacity: 1;
-}
+.sidebar.expanded .menu-item span { opacity: 1; }
 
-/* History in sidebar */
+/* History */
 .sidebar-history {
-  margin-top: 30px;
+  margin-top: 20px;
   padding: 0 10px;
   flex: 1;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity .3s;
   pointer-events: none;
 }
 
@@ -158,88 +103,43 @@ body::before {
   pointer-events: auto;
 }
 
-.sidebar-history-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.5);
-  padding: 0 10px 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
 .sidebar-history-item {
   padding: 10px;
-  margin-bottom: 4px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255,255,255,.05);
+  margin-bottom: 6px;
   cursor: pointer;
-  font-size: 14px;
-  line-height: 1.4;
-  transition: all 0.2s ease;
-  color: rgba(255, 255, 255, 0.8);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  touch-action: manipulation;
-  user-select: none;
-  -webkit-user-select: none;
   min-height: 44px;
-  display: flex;
-  align-items: center;
 }
 
 .sidebar-history-item:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
+  background: rgba(255,255,255,.15);
 }
 
-.sidebar-history-item:active {
-  background: rgba(255, 255, 255, 0.18);
-  transform: scale(0.98);
-}
-
-/* Toggle button */
+/* Toggle desktop */
 .toggle-btn {
   position: absolute;
   right: -12px;
   top: 20px;
   width: 44px;
   height: 44px;
-  background: rgba(76, 161, 175, 0.8);
   border-radius: 50%;
+  background: rgba(76,161,175,.9);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
-  border: 2px solid rgba(20, 20, 25, 0.95);
-  touch-action: manipulation;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.toggle-btn:hover {
-  background: rgba(76, 161, 175, 1);
-  transform: scale(1.1);
-}
-
-.toggle-btn:active {
-  background: rgba(76, 161, 175, 1);
-  transform: scale(0.95);
 }
 
 .toggle-btn svg {
-  width: 12px;
-  height: 12px;
-  color: #fff;
-  transition: transform 0.3s ease;
+  transition: transform .3s;
 }
 
 .sidebar.expanded .toggle-btn svg {
   transform: rotate(180deg);
 }
 
-/* Mobile menu button */
+/* Mobile button */
 .mobile-menu-btn {
   display: none;
   position: fixed;
@@ -247,62 +147,32 @@ body::before {
   left: 20px;
   width: 44px;
   height: 44px;
-  background: rgba(76, 161, 175, 0.8);
   border-radius: 12px;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 999;
+  background: rgba(76,161,175,.9);
+  z-index: 1001;
   border: none;
-  transition: all 0.2s ease;
-  touch-action: manipulation;
-  user-select: none;
-  -webkit-user-select: none;
 }
 
-.mobile-menu-btn:hover {
-  background: rgba(76, 161, 175, 1);
-  transform: scale(1.05);
-}
-
-.mobile-menu-btn:active {
-  background: rgba(76, 161, 175, 1);
-  transform: scale(0.95);
-}
-
-.mobile-menu-btn svg {
-  width: 24px;
-  height: 24px;
-  color: #fff;
-}
-
-/* Overlay for mobile */
+/* Overlay */
 .sidebar-overlay {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0,0,0,.5);
   z-index: 999;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  cursor: pointer;
-  touch-action: manipulation;
 }
 
-.sidebar-overlay.active {
-  opacity: 1;
-}
+.sidebar-overlay.active { display: block; }
 
-/* === Main content === */
+/* Main */
 .main-content {
   margin-left: 60px;
-  transition: margin-left 0.3s ease;
-  padding: 40px 20px;
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  padding: 40px 20px;
+  transition: margin-left .3s;
 }
 
 .sidebar.expanded ~ .main-content {
@@ -315,221 +185,78 @@ body::before {
 }
 
 h2 {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 24px;
-  letter-spacing: 0.4px;
   text-align: center;
+  margin-bottom: 24px;
+}
+
+input, button {
+  width: 100%;
+  padding: 18px;
+  border-radius: 14px;
+  margin-top: 12px;
+  font-size: 16px;
 }
 
 input {
-  width: 100%;
-  padding: 18px 20px;
-  margin-top: 12px;
-  border-radius: 14px;
-  font-size: 16px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.06);
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.15);
   color: #fff;
-  backdrop-filter: blur(14px);
-  outline: none;
-  transition: all 0.25s ease;
-  touch-action: manipulation;
-  min-height: 52px;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-input::placeholder {
-  color: rgba(255,255,255,0.5);
-}
-
-input:focus {
-  border-color: rgba(120, 180, 255, 0.7);
-  box-shadow: 0 0 0 3px rgba(120,180,255,0.2);
 }
 
 button {
-  width: 100%;
-  margin-top: 16px;
-  padding: 18px;
-  border-radius: 14px;
   border: none;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
+  background: linear-gradient(135deg,#4ca1af,#c471ed);
   color: #fff;
-  background: linear-gradient(135deg, #4ca1af, #c471ed);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s;
-  touch-action: manipulation;
-  user-select: none;
-  -webkit-user-select: none;
-  min-height: 52px;
+  cursor: pointer;
 }
 
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.45);
-  opacity: 0.95;
-}
-
-button:active {
-  transform: translateY(0);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-}
-
-/* === Tablet styles (768px - 1024px) === */
-@media (max-width: 1024px) {
-  .main-content {
-    padding: 30px 20px;
-  }
-  
-  h2 {
-    font-size: 28px;
-  }
-  
-  .content-wrapper {
-    max-width: 520px;
-  }
-}
-
-/* === Mobile styles (< 768px) === */
-@media (max-width: 768px) {
+/* Mobile */
+@media (max-width:768px) {
   .sidebar {
-    width: 0;
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
-  }
-  
-  .sidebar.expanded {
     width: 280px;
+  }
+
+  .sidebar.expanded {
     transform: translateX(0);
-    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
   }
-  
+
   .main-content {
-    margin-left: 0 !important;
-    padding: 80px 20px 30px;
-  }
-  
-  .toggle-btn {
-    display: none;
-  }
-  
-  .mobile-menu-btn {
-    display: flex;
-  }
-  
-  .sidebar-overlay {
-    display: block;
-  }
-  
-  h2 {
-    font-size: 26px;
-  }
-}
-
-/* === Small mobile styles (< 480px) === */
-@media (max-width: 480px) {
-  .mobile-menu-btn {
-    width: 44px;
-    height: 44px;
-    top: 15px;
-    left: 15px;
-  }
-  
-  .mobile-menu-btn svg {
-    width: 20px;
-    height: 20px;
-  }
-  
-  .main-content {
-    padding: 70px 15px 20px;
-  }
-  
-  h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
+    margin-left: 0;
+    padding-top: 80px;
   }
 
-  input, button {
-    font-size: 15px;
-    padding: 16px;
-  }
-  
-  .sidebar.expanded {
-    width: 260px;
-  }
-  
-  .logo {
-    font-size: 22px;
-    padding: 18px;
-  }
-  
-  .menu {
-    margin-top: 80px;
-  }
-}
-
-/* === Extra small devices (< 360px) === */
-@media (max-width: 360px) {
-  .sidebar.expanded {
-    width: 240px;
-  }
-  
-  h2 {
-    font-size: 22px;
-  }
-  
-  input, button {
-    font-size: 14px;
-    padding: 14px;
-  }
+  .toggle-btn { display: none; }
+  .mobile-menu-btn { display: flex; }
 }
 </style>
 </head>
+
 <body>
 
-<!-- Mobile menu button -->
 <button class="mobile-menu-btn" onclick="toggleSidebar()">
-  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-  </svg>
+☰
 </button>
 
-<!-- Overlay for mobile -->
 <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
 
-<!-- Sidebar -->
 <div class="sidebar" id="sidebar">
   <div class="logo">
-    <span>📚</span>
-    <span class="logo-text">Історія</span>
+    📚 <span class="logo-text">Історія</span>
   </div>
-  
-  <div class="toggle-btn" onclick="toggleSidebar()">
-    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-    </svg>
-  </div>
-  
+
+  <div class="toggle-btn" onclick="toggleSidebar()">›</div>
+
   <div class="menu">
-    <div class="menu-item" onclick="newQuestion()">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-      </svg>
-      <span>Нове питання</span>
-    </div>
+    <div class="menu-item" onclick="newQuestion()">➕ <span>Нове питання</span></div>
   </div>
-  
+
   <div class="sidebar-history">
-    <div class="sidebar-history-title">Історія</div>
+    <div style="opacity:.5;font-size:12px;margin-bottom:6px">Історія</div>
     <div id="history"></div>
   </div>
 </div>
 
-<!-- Main Content -->
 <div class="main-content">
   <div class="content-wrapper">
     <h2>📚 Історичне питання</h2>
@@ -539,66 +266,38 @@ button:active {
 </div>
 
 <script>
-// Sidebar toggle
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+
 function toggleSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('overlay');
-  const isMobile = window.innerWidth <= 768;
-  
   sidebar.classList.toggle('expanded');
-  
-  if (isMobile) {
+  if (window.innerWidth <= 768) {
     overlay.classList.toggle('active');
-    // Prevent body scroll when sidebar is open
-    if (sidebar.classList.contains('expanded')) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.classList.toggle('no-scroll');
   } else {
     localStorage.setItem('sidebarExpanded', sidebar.classList.contains('expanded'));
   }
 }
 
 function closeSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('overlay');
-  
   sidebar.classList.remove('expanded');
   overlay.classList.remove('active');
-  document.body.style.overflow = '';
+  document.body.classList.remove('no-scroll');
 }
 
-// Restore sidebar state (only for desktop)
 if (window.innerWidth > 768 && localStorage.getItem('sidebarExpanded') === 'true') {
-  document.getElementById('sidebar').classList.add('expanded');
+  sidebar.classList.add('expanded');
 }
 
-// New question
 function newQuestion() {
   document.getElementById('question').value = '';
   document.getElementById('question').focus();
-  
-  // Close sidebar on mobile
-  if (window.innerWidth <= 768) {
-    closeSidebar();
-  }
+  if (window.innerWidth <= 768) closeSidebar();
 }
 
-// Get question from URL
-const params = new URLSearchParams(window.location.search);
-const qFromUrl = params.get("q");
-
-if (qFromUrl) {
-  document.getElementById("question").value = qFromUrl;
-  saveHistory(qFromUrl);
-}
-
-// Ask button
 function ask() {
-  const q = document.getElementById("question").value.trim();
+  const q = document.getElementById('question').value.trim();
   if (!q) return;
-
   saveHistory(q);
 
   const prompt = `
@@ -608,83 +307,31 @@ function ask() {
 
 Питання: ${q}
   `;
-
   location.href = "https://chat.openai.com/?q=" + encodeURIComponent(prompt);
 }
 
-// Save history
 function saveHistory(q) {
-  let history = JSON.parse(localStorage.getItem("history")) || [];
-  if (!history.includes(q)) {
-    history.unshift(q);
-  }
-  history = history.slice(0, 15);
-  localStorage.setItem("history", JSON.stringify(history));
+  let h = JSON.parse(localStorage.getItem('history')) || [];
+  if (!h.includes(q)) h.unshift(q);
+  localStorage.setItem('history', JSON.stringify(h.slice(0,15)));
   renderHistory();
 }
 
-// Render history in sidebar
 function renderHistory() {
-  const history = JSON.parse(localStorage.getItem("history")) || [];
-  const container = document.getElementById("history");
-  container.innerHTML = "";
-
-  if (history.length === 0) {
-    container.innerHTML = '<div style="opacity: 0.4; font-size: 13px; padding: 10px; text-align: center;">Історія порожня</div>';
-    return;
-  }
-
-  history.forEach(q => {
-    const div = document.createElement("div");
-    div.className = "sidebar-history-item";
-    div.innerText = q;
-    div.title = q; // Show full text on hover
-    
-    // Add both click and touchstart events for better mobile support
-    const handleClick = () => {
-      document.getElementById("question").value = q;
-      
-      // Close sidebar on mobile after selection
-      if (window.innerWidth <= 768) {
-        closeSidebar();
-      }
-      
-      // Focus input with a small delay for mobile
-      setTimeout(() => {
-        document.getElementById("question").focus();
-      }, 100);
+  const h = JSON.parse(localStorage.getItem('history')) || [];
+  const c = document.getElementById('history');
+  c.innerHTML = '';
+  h.forEach(q => {
+    const d = document.createElement('div');
+    d.className = 'sidebar-history-item';
+    d.textContent = q;
+    d.onclick = () => {
+      document.getElementById('question').value = q;
+      if (window.innerWidth <= 768) closeSidebar();
     };
-    
-    div.addEventListener('click', handleClick);
-    div.addEventListener('touchend', (e) => {
-      e.preventDefault();
-      handleClick();
-    });
-    
-    container.appendChild(div);
+    c.appendChild(d);
   });
 }
-
-// Handle window resize
-let resizeTimer;
-window.addEventListener('resize', () => {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(() => {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
-    
-    if (window.innerWidth > 768) {
-      overlay.classList.remove('active');
-      // Restore saved state for desktop
-      if (localStorage.getItem('sidebarExpanded') === 'true') {
-        sidebar.classList.add('expanded');
-      }
-    } else {
-      sidebar.classList.remove('expanded');
-      overlay.classList.remove('active');
-    }
-  }, 250);
-});
 
 renderHistory();
 </script>
